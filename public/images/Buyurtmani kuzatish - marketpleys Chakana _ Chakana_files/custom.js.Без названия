@@ -1,0 +1,279 @@
+const modal = document.querySelector('.modal__region');
+const regionSelecting = document.querySelectorAll('.region__selecting');
+const regionSelectContent = document.querySelector('.region__select');
+const regionSelectBtnYes = document.querySelector('.region__select-btn-yes');
+const regionSelectBtnNo = document.querySelector('.region__select-btn-no');
+const regionSelectedLink = document.getElementById('selected-region');
+const language = document.documentElement.lang;
+const regions = [{
+    "id": 1,
+    "name_uz": "Toshkent shahri",
+    "name_ru": "Город Ташкент",
+},
+    {
+        "id": 2,
+        "name_uz": "Qoraqalpog‘iston Respublikasi",
+        "name_ru": "Республика Каракалпакстан",
+    },
+    {
+        "id": 3,
+        "name_uz": "Andijon viloyati",
+        "name_ru": "Андижанская область",
+    },
+    {
+        "id": 4,
+        "name_uz": "Buxoro viloyati",
+        "name_ru": "Бухарская область",
+    },
+    {
+        "id": 5,
+        "name_uz": "Jizzax viloyati",
+        "name_ru": "Джизакская область",
+    },
+    {
+        "id": 6,
+        "name_uz": "Qashqadaryo viloyati",
+        "name_ru": "Кашкадарьинская область",
+    },
+    {
+        "id": 7,
+        "name_uz": "Navoiy viloyati",
+        "name_ru": "Навоийская область",
+    },
+    {
+        "id": 8,
+        "name_uz": "Namangan viloyati",
+        "name_ru": "Наманганская область",
+    },
+    {
+        "id": 9,
+        "name_uz": "Samarqand viloyati",
+        "name_ru": "Самаркандская область",
+    },
+    {
+        "id": 10,
+        "name_uz": "Surxondaryo viloyati",
+        "name_ru": "Сурхандарьинская область",
+    },
+    {
+        "id": 11,
+        "name_uz": "Sirdaryo viloyati",
+        "name_ru": "Сырдарьинская область",
+    },
+    {
+        "id": 12,
+        "name_uz": "Toshkent viloyati",
+        "name_ru": "Ташкентская область",
+    },
+    {
+        "id": 13,
+        "name_uz": "Farg‘ona viloyati",
+        "name_ru": "Ферганская область",
+    },
+    {
+        "id": 14,
+        "name_uz": "Xorazm viloyati",
+        "name_ru": "Хорезмская область",
+    }
+];
+
+/*toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}*/
+
+// $(document).ready(function () {
+//     setTimeout(function () {
+//         modal.fadeIn();
+//         modal.classList.add('modal__region')
+//     }, 5000)
+// })
+
+if ($('.modal__region').length) {
+    document.addEventListener('DOMContentLoaded', function () {
+        if (getCookie('region') === "") {
+            setTimeout(function () {
+                // regionSelectContent.classList.remove('d-none');
+                modal.classList.add('modal-show-region');
+            }, 5000)
+        }
+        /*    if (getCookie('credit_limit') !== "close") {
+                $('.limit__edition').removeClass('d-none');
+            }*/
+        /*if (getCookie('cookie_policy') !== 'close') {
+            $('.cookie.custom-nav').removeClass('d-none');
+        }*/
+    }, false);
+}
+
+$(document).keyup(function (e) {
+    if (e.keyCode === 27) {
+        $('.region__select').css('display', 'none');
+    }
+});
+
+
+if ($('.region__select').length) {
+    regionSelectContent.addEventListener('click', function (evt) {
+        if (evt.target.matches('.region__select')) {
+            regionSelectContent.style.display = "none";
+        }
+    })
+}
+
+if ($('.region__select-btn-yes').length) {
+    regionSelectBtnYes.addEventListener('click', function () {
+        regionSelectContent.classList.add('d-none');
+        setRegion(1)
+    })
+}
+
+if ($('.region__select-btn-no').length) {
+    regionSelectBtnNo.addEventListener('click', function () {
+        regionSelectContent.classList.add('d-none');
+        modal.classList.add('modal-show-region');
+    })
+}
+
+regionSelecting.forEach((elem) => {
+    elem.addEventListener('click', () => {
+        modal.classList.add('modal-show-region');
+    })
+});
+
+function setRegion(id) {
+    setCookie('region', id, 7);
+    let region = regions.find(item => item.id === id);
+    regionSelectedLink.innerHTML = "<i class=\"ec ec-map-pointer mr-1\"></i> " + region['name_' + language];
+    modal.classList.remove('modal-show-region');
+    $.ajax({
+        url: '/ajax/set-region/?region_id=' + id,
+        type: 'GET',
+        complete: function () {
+            location.reload();
+        }
+    });
+}
+
+function setCookie(cname, cvalue, exdays) {
+    let d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+$('.cookie__btn').on('click', function () {
+    $('.cookie').hide();
+    setCookie('cookie_policy', 'close', 7);
+});
+
+function viewProductGoogle(product) {
+    ga('ec:addImpression', { // Provide product details in an impressionFieldObject.
+        'id': 'P' + product.id, // Product ID (string).
+        'name': product.name, // Product name (string).
+        'category': product.category, // Product category (string).
+        'brand': product.brand, // Product brand (string).
+    });
+}
+
+$(document).ready(function () {
+    $('.money').mask("# ##0", {
+        reverse: true
+    });
+});
+
+
+// Product view page
+function changeInstallmentPrice(month, button) {
+    $('input[name="installment"]').val(month);
+    submitForm();
+    changeActiveButton(button);
+}
+
+function changeCashPrice(button) {
+    $('input[name="cash"]').val(1);
+    $('input[name="credit"]').val(null);
+    submitForm();
+    changeActiveButton(button);
+}
+
+function changeCreditPrice(month, button) {
+    $('input[name="credit"]').val(month);
+    $('input[name="cash"]').val(null);
+    submitForm();
+    changeActiveButton(button);
+}
+
+function changeCashPriceMobile(button) {
+    $('input[name="cash"]').val(1);
+    $('input[name="credit"]').val(null);
+    submitFormMobile();
+    changeActiveButton(button);
+}
+
+function changeCreditPriceMobile(month, button) {
+    $('input[name="credit"]').val(month);
+    $('input[name="cash"]').val(null);
+    submitFormMobile();
+    changeActiveButton(button);
+}
+
+function submitFormMobile() {
+    $("#price_form_mobile").submit();
+}
+
+function submitForm() {
+    $("#price_form_desktop").submit();
+}
+
+function changeActiveButton(button) {
+    const priceButtonsUI = document.querySelectorAll('.installment__months__button');
+    priceButtonsUI.forEach(function (priceButtonUI) {
+        priceButtonUI.classList.remove('installment-active--btn');
+    });
+
+    button.classList.add('installment-active--btn');
+}
+
+$('#cash_carts_carousel').on('afterChange', function(event, slick, currentSlide){
+    const nextButton = $('#step-one-buttons');
+    const slide = slick.$slides.get(currentSlide);
+    const elem = slide.querySelector('.credit__card');
+
+    if (elem.dataset.selectable) {
+        changeCard(elem.dataset.card_id, elem);
+        setTimeout(function () {
+            nextButton.collapse('show');
+        }, 300);
+    } else {
+        nextButton.collapse('hide');
+    }
+});

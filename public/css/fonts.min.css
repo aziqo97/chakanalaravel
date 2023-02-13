@@ -1,0 +1,47 @@
+@font-face {
+    font-family: "Agrofont";
+    src: url("/images/ALSAgrofont-Medium.woff2") format("woff2"), url("/images/ALSAgrofont-Medium.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap
+}
+
+@font-face {
+    font-family: "Agrofont";
+    src: url("/images/ALSAgrofont-Bold.woff") format("woff2"), url("/images/ALSAgrofont-Bold.woff") format("woff");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap
+}
+
+@font-face {
+    font-family: "Agrofont";
+    src: url("/images/ALSAgrofont-Regular.woff2") format("woff2"), url("/images/ALSAgrofont-Regular.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap
+}
+
+@font-face {
+    font-family: "Agrofont Expanded";
+    src: url("/images/ALSAgrofont-BoldExpanded.woff2") format("woff2"), url("./images/ALSAgrofont-BoldExpanded.woff") format("woff");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap
+}
+
+@font-face {
+    font-family: "Agrofont";
+    src: url("/images/ALSAgrofont-Black.woff2") format("woff2"), url("/images/ALSAgrofont-Black.woff") format("woff");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap
+}
+
+@font-face {
+    font-family: "Segoe UI";
+    src: url("/images/SegoeUI.woff2") format("woff2"), url("/images/SegoeUI.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap
+}
